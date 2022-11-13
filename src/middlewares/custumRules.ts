@@ -2,6 +2,7 @@ import connection from "../database";
 
 export type Rule =
   | {
+      type: "async";
       name: string;
       callback: (
         value: string | number | boolean,
@@ -13,9 +14,9 @@ export type Rule =
         ) => void
       ) => Promise<void>;
       errorMessage: string;
-      type: "async";
     }
   | {
+      type: "sync";
       name: string;
       callback: (
         value: string | number | boolean,
@@ -23,7 +24,6 @@ export type Rule =
         feild: string
       ) => boolean;
       errorMessage: string;
-      type: "sync";
     };
 
 const container: Rule[] = [

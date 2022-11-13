@@ -29,7 +29,7 @@ const Validation = (rules: (req: Request) => { [x: string]: string }) => {
         });
         next();
       },
-      () => res.status(422).json(validation.errors)
+      () => res.status(422).json(validation.errors.errors)
     );
   };
 };

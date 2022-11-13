@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ValidatorPrem } from "../../types/validation";
 import { ErrorBag, RulesCointainer, Schema } from "./core/types";
 import container from "./RulesContainer";
 
@@ -23,9 +22,6 @@ class Validator {
           const ruleObjet = new (this.container[rule] as any)(lable, value);
         });
       });
-      // Object.entries(schema[location]).map((item) => {
-
-      // });
     });
   }
 
