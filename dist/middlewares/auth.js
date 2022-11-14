@@ -35,53 +35,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var Connection = /** @class */ (function () {
-    function Connection(connection) {
-        this.processoer = connection;
-        this.connect();
-    }
-    Connection.prototype.close = function () {
-        var _a;
-        (_a = this.connection) === null || _a === void 0 ? void 0 : _a.release();
-        return this;
-    };
-    Connection.prototype.connect = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, err_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        _a = this;
-                        return [4 /*yield*/, this.processoer.connect()];
-                    case 1:
-                        _a.connection = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_1 = _b.sent();
-                        throw err_1;
-                    case 3: return [2 /*return*/, this];
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var dontenv_1 = require("../helps/dontenv");
+var users_1 = __importDefault(require("../models/users"));
+var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, payload, user, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                token = req.headers.authorization.split(" ")[1];
+                payload = jsonwebtoken_1.default.verify(token, (0, dontenv_1.env)("TOKEN_SECRET"));
+                return [4 /*yield*/, new users_1.default().find("id", payload.id)];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    res.status(401).json({ error: "Unauthenticated" });
                 }
-            });
-        });
-    };
-    Connection.prototype.execute = function (query, values) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, ((_a = this.connection) === null || _a === void 0 ? void 0 : _a.query(query, values))];
-                    case 1: return [4 /*yield*/, _c.sent()];
-                    case 2:
-                        result = _c.sent();
-                        (_b = this.connection) === null || _b === void 0 ? void 0 : _b.release();
-                        return [2 /*return*/, result === null || result === void 0 ? void 0 : result.rows];
+                req.auth = user;
+                next();
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                if (error_1.message === "jwt must be provided") {
+                    res.status(401).json({ error: "Unauthenticated" });
+                    return [2 /*return*/];
                 }
-            });
-        });
-    };
-    return Connection;
-}());
-exports.default = Connection;
+                throw error_1;
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.default = auth;

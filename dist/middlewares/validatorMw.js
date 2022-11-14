@@ -38,18 +38,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var validatorjs_1 = __importDefault(require("validatorjs"));
-var Validation = function (rules) {
+var Validation = function (rules, vales) {
+    if (vales === void 0) { vales = "body"; }
     return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var rulesObjet, validation;
         return __generator(this, function (_a) {
             rulesObjet = rules(req);
-            validation = new validatorjs_1["default"](req.body, rulesObjet);
+            validation = new validatorjs_1.default(req[vales], rulesObjet);
             return [2 /*return*/, validation.checkAsync(function () {
                     var data = {};
                     Object.keys(rulesObjet).map(function (key) {
-                        data[key] = req.body[key];
+                        data[key] = req[vales][key];
                         req.validated = data;
                     });
                     next();
@@ -57,4 +58,4 @@ var Validation = function (rules) {
         });
     }); };
 };
-exports["default"] = Validation;
+exports.default = Validation;

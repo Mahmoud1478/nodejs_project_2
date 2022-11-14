@@ -38,20 +38,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var database_1 = __importDefault(require("../../database"));
 var sql_1 = __importDefault(require("./sql"));
 var Model = /** @class */ (function () {
-    function Model() {
+    function Model(table) {
         this.wheres = [];
         this.joins = [];
-        this.table = this.constructor.name + "s";
-        this.query = sql_1["default"].select(this.table, "*");
         this.values = [];
+        this.table = table;
+        this.query = sql_1.default.select(this.table, "*");
     }
     Model.prototype.select = function (colums) {
         if (colums === void 0) { colums = ["*"]; }
-        this.query = sql_1["default"].select(this.table, colums.toString());
+        this.query = sql_1.default.select(this.table, colums.toString());
         return this;
     };
     Model.prototype.update = function (columns) {
@@ -67,9 +67,9 @@ var Model = /** @class */ (function () {
                             this.values.push(columns[column]);
                             valuesLen++;
                         }
-                        this.query = sql_1["default"].update(this.table, modColums.toString());
+                        this.query = sql_1.default.update(this.table, modColums.toString());
                         this.build();
-                        return [4 /*yield*/, (0, database_1["default"])()];
+                        return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn.query(this.query + " RETURNING *", this.values)];
@@ -81,15 +81,15 @@ var Model = /** @class */ (function () {
             });
         });
     };
-    Model.prototype["delete"] = function () {
+    Model.prototype.delete = function () {
         return __awaiter(this, void 0, void 0, function () {
             var conn, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.query = sql_1["default"]["delete"](this.table);
+                        this.query = sql_1.default.delete(this.table);
                         this.build();
-                        return [4 /*yield*/, (0, database_1["default"])()];
+                        return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn.query(this.query + " RETURNING *", this.values)];
@@ -111,10 +111,10 @@ var Model = /** @class */ (function () {
                         Object.keys(columns).forEach(function (item, index) {
                             values.push("$".concat(index + 1));
                         });
-                        return [4 /*yield*/, (0, database_1["default"])()];
+                        return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query(sql_1["default"].insert(this.table, Object.keys(columns).toString(), values.toString()), Object.values(columns))];
+                        return [4 /*yield*/, conn.query(sql_1.default.insert(this.table, Object.keys(columns).toString(), values.toString()), Object.values(columns))];
                     case 2:
                         result = _a.sent();
                         conn.release();
@@ -136,7 +136,7 @@ var Model = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         this.build();
-                        return [4 /*yield*/, (0, database_1["default"])()];
+                        return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _a.sent();
                         return [4 /*yield*/, conn.query(this.query, this.values)];
@@ -148,9 +148,30 @@ var Model = /** @class */ (function () {
             });
         });
     };
+    Model.prototype.find = function (column, value) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.where(column, value).build();
+                        return [4 /*yield*/, (0, database_1.default)()];
+                    case 1:
+                        conn = _a.sent();
+                        return [4 /*yield*/, conn.query(this.query, this.values)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        if (result.rows.length > 0)
+                            return [2 /*return*/, result.rows[0]];
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
     Model.prototype.build = function () {
         var _this = this;
-        sql_1["default"].arrangement.forEach(function (item) {
+        sql_1.default.arrangement.forEach(function (item) {
             _this.query += _this.handle_statement(item);
         });
     };
@@ -163,14 +184,14 @@ var Model = /** @class */ (function () {
                     _this.wheres.forEach(function (item) {
                         result_1.push(item.join(" "));
                     });
-                    return sql_1["default"].where(result_1.join(" AND "));
+                    return sql_1.default.where(result_1.join(" AND "));
                 }
                 return "";
             },
-            joins: function () { return _this.joins.join(" "); }
+            joins: function () { return _this.joins.join(" "); },
         };
         return map[statement]();
     };
     return Model;
 }());
-exports["default"] = Model;
+exports.default = Model;

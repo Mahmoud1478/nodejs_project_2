@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var rules = function (req) {
     var schema = {
-        lastname: "required"
+        lastname: "required",
     };
     switch (req.method) {
         case "POST":
@@ -11,10 +11,10 @@ var rules = function (req) {
             break;
         case "PUT":
         case "PATCH":
-            schema.fristname = "required|unique:users,firstname,".concat(req.params.id);
+            schema.firstname = "required|unique:users,firstname,".concat(req.params.id);
             schema.password = "nullable";
             break;
     }
     return schema;
 };
-exports["default"] = rules;
+exports.default = rules;

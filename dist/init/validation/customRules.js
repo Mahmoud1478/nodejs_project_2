@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var database_1 = __importDefault(require("../../database"));
 var container = [
     {
@@ -55,7 +55,7 @@ var container = [
                             query += " AND id != ($2)";
                             values.push(id);
                         }
-                        return [4 /*yield*/, (0, database_1["default"])()];
+                        return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _b.sent();
                         return [4 /*yield*/, conn.query(query, values)];
@@ -70,7 +70,13 @@ var container = [
                 }
             });
         }); },
-        errorMessage: ""
+        errorMessage: "",
+    },
+    {
+        type: "sync",
+        name: "nullable",
+        errorMessage: "",
+        callback: function () { return true; },
     },
 ];
-exports["default"] = container;
+exports.default = container;

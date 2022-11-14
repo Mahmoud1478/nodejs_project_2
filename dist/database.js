@@ -38,14 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
-var dotenv_1 = __importDefault(require("dotenv"));
+Object.defineProperty(exports, "__esModule", { value: true });
 var pg_1 = require("pg");
-dotenv_1["default"].config();
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 var _a = process.env, host = _a.host, user = _a.user, password = _a.password, database = _a.database;
 var port = process.env.port;
 var dbProcessor = new pg_1.Pool({ host: host, user: user, password: password, database: database, port: port });
-exports["default"] = (function () { return __awaiter(void 0, void 0, void 0, function () {
+exports.default = (function () { return __awaiter(void 0, void 0, void 0, function () {
     var err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {

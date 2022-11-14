@@ -11,7 +11,7 @@ export const index = async (request: Request, response: Response): Promise<Respo
 export const store = async (request: Request, response: Response): Promise<Response> => {
     const data = request.validated as { [x: string]: string };
     data.password = hashSync(
-        data.password + env("bcybt_password"),
+        data.password + env("bcypt_password"),
         parseInt(env("salt") as string)
     );
     return response.json(await new UserModel().create<User>(data));
@@ -30,7 +30,7 @@ export const update = async (request: Request, response: Response): Promise<Resp
     if (data.password) {
         console.log("yes");
         data.password = hashSync(
-            data.password + env("bcybt_password"),
+            data.password + env("bcypt_password"),
             parseInt(env("salt") as string)
         );
     } else {
@@ -43,7 +43,7 @@ export const update = async (request: Request, response: Response): Promise<Resp
     );
 };
 
-export const Delete = async (request: Request, response: Response): Promise<Response> => {
+export const destroy = async (request: Request, response: Response): Promise<Response> => {
     return response.json(
         await new UserModel().where("id", request.params.id as string).delete<User>()
     );
@@ -68,7 +68,7 @@ export const sign_up = async (request: Request, response: Response): Promise<Res
 export const sign_in = async (request: Request, response: Response): Promise<Response> => {
     const data = request.validated as { [x: string]: string };
     const user = await new UserModel().find<User>("firstname", data.firstname);
-    if (!user || !compareSync(data.password + env("bcybt_password"), user.password)) {
+    if (!user || !compareSync(data.password + env("bcypt_password"), user.password)) {
         return response.json({ errors: "user credential is worng" }).status(422);
     }
     return response.json({

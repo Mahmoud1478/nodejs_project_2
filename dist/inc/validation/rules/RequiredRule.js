@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,53 +50,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var Connection = /** @class */ (function () {
-    function Connection(connection) {
-        this.processoer = connection;
-        this.connect();
+var Role_1 = __importDefault(require("../core/classess/Role"));
+var RequiredRule = /** @class */ (function (_super) {
+    __extends(RequiredRule, _super);
+    function RequiredRule() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Connection.prototype.close = function () {
-        var _a;
-        (_a = this.connection) === null || _a === void 0 ? void 0 : _a.release();
-        return this;
-    };
-    Connection.prototype.connect = function () {
+    RequiredRule.prototype.validate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, err_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        _a = this;
-                        return [4 /*yield*/, this.processoer.connect()];
-                    case 1:
-                        _a.connection = _b.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_1 = _b.sent();
-                        throw err_1;
-                    case 3: return [2 /*return*/, this];
-                }
+            return __generator(this, function (_a) {
+                throw new Error("Method not implemented.");
             });
         });
     };
-    Connection.prototype.execute = function (query, values) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, ((_a = this.connection) === null || _a === void 0 ? void 0 : _a.query(query, values))];
-                    case 1: return [4 /*yield*/, _c.sent()];
-                    case 2:
-                        result = _c.sent();
-                        (_b = this.connection) === null || _b === void 0 ? void 0 : _b.release();
-                        return [2 /*return*/, result === null || result === void 0 ? void 0 : result.rows];
-                }
-            });
-        });
-    };
-    return Connection;
-}());
-exports.default = Connection;
+    return RequiredRule;
+}(Role_1.default));
+exports.default = RequiredRule;

@@ -18,12 +18,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var model_1 = __importDefault(require("../inc/db/model"));
-var UserModel = /** @class */ (function (_super) {
-    __extends(UserModel, _super);
-    function UserModel() {
-        return _super.call(this, "users") || this;
+var Role_1 = __importDefault(require("../core/classess/Role"));
+var UniqueRule = /** @class */ (function (_super) {
+    __extends(UniqueRule, _super);
+    function UniqueRule() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    return UserModel;
-}(model_1.default));
-exports.default = UserModel;
+    UniqueRule.prototype.validate = function () {
+        throw new Error("Method not implemented.");
+    };
+    return UniqueRule;
+}(Role_1.default));
+exports.default = UniqueRule;
