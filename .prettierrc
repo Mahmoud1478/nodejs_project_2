@@ -1,5 +1,7 @@
 {
     "semi": true,
     "singleQuote": false,
-    "arrowParens": "always"
+    "arrowParens": "always",
+    "tabWidth": 4,
+    "printWidth": 100
 }

@@ -1,3 +1,3 @@
 export const env = (key: string): string | undefined => {
-  return process.env[key];
+    return process.env[key];
 };

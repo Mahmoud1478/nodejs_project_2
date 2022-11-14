@@ -1,8 +1,8 @@
-import { Request } from "express";
-
-const rules = (req: Request) => {
-    const schema: { [x: string]: string } = {
-        lastname: "required",
+"use strict";
+exports.__esModule = true;
+var rules = function (req) {
+    var schema = {
+        lastname: "required"
     };
     switch (req.method) {
         case "POST":
@@ -11,10 +11,10 @@ const rules = (req: Request) => {
             break;
         case "PUT":
         case "PATCH":
-            schema.firstname = `required|unique:users,firstname,${req.params.id}`;
+            schema.fristname = "required|unique:users,firstname,".concat(req.params.id);
             schema.password = "nullable";
             break;
     }
     return schema;
 };
-export default rules;
+exports["default"] = rules;

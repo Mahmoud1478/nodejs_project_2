@@ -1,36 +1,22 @@
-import { NextFunction, Request, Response } from "express";
-
+import { NextFunction, Response, Request } from "express";
 import Validator from "validatorjs";
-// import rules from "../handlers/users/schema/rules";
-import continer, { Rule } from "./custumRules";
 
-const Validation = (rules: (req: Request) => { [x: string]: string }) => {
-  return async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    const rulesObjet = rules(req);
-    continer.map((rule: Rule) => {
-      if (rule.type === "async") {
-        Validator.registerAsync(rule.name, rule.callback, rule.errorMessage);
-      } else {
-        Validator.register(rule.name, rule.callback, rule.errorMessage);
-      }
-    });
+const Validation =
+    (rules: (req: Request) => { [x: string]: string }, vales = "body") =>
+    async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        const rulesObjet = rules(req);
+        const validation = new Validator(req[vales], rulesObjet);
+        return validation.checkAsync(
+            () => {
+                const data: { [x: string]: string } = {};
+                Object.keys(rulesObjet).map((key) => {
+                    data[key] = (req[vales] as { [x: string]: string })[key];
+                    req.validated = data;
+                });
+                next();
+            },
+            () => res.status(422).json(validation.errors.errors)
+        );
+    };
 
-    const validation = new Validator(req.body, rulesObjet);
-    return validation.checkAsync(
-      () => {
-        const data: { [x: string]: string } = {};
-        Object.keys(rulesObjet).map((key) => {
-          data[key] = req.body[key];
-          (req as any).validated = data;
-        });
-        next();
-      },
-      () => res.status(422).json(validation.errors.errors)
-    );
-  };
-};
 export default Validation;

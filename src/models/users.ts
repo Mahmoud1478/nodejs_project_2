@@ -1,14 +1,16 @@
 import Model from "../inc/db/model";
 
-export type TUser = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  password: string;
+export type User = {
+    id: number;
+    firstname: string;
+    lastname: string;
+    password: string;
 };
 
-class User extends Model {
-  protected table = "users";
+class UserModel extends Model {
+    public constructor() {
+        super("users");
+    }
 }
 
-export default User;
+export default UserModel;

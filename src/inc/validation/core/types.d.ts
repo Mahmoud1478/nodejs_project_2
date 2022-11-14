@@ -1,21 +1,21 @@
 import Rule from "./classess/Role";
 
 export type ErrorBag = {
-  [lable: string]: string[];
+    [lable: string]: string[];
 };
 
 export type Schema = {
-  body?: {
-    [lable: string]: string[];
-  };
-  prams?: {
-    [lable: string]: string[];
-  };
-  query?: {
-    [lable: string]: string[];
-  };
+    body?: {
+        [lable: string]: string[];
+    };
+    prams?: {
+        [lable: string]: string[];
+    };
+    query?: {
+        [lable: string]: string[];
+    };
 };
 
 export type RulesCointainer = {
-  [lable: string]: typeof Rule;
+    [lable: string]: typeof Rule;
 };
