@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 import userHandler from "./handlers/users/userHandler";
+import productHandler from "./handlers/products/productHandler";
 import validattorInit from "./init/validation";
 const App: Application = express();
 const port = 3000;
@@ -17,4 +18,5 @@ App.get("/", (request: Request, response: Response): void => {
 });
 
 userHandler(App);
+productHandler(App);
 export default App;

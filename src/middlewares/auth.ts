@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Jwt, { JwtPayload } from "jsonwebtoken";
 import { env } from "../helps/dontenv";
-import UserModel, { User } from "../models/users";
+import UserModel, { User } from "../models/user";
 const auth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const token = (req.headers.authorization as string).split(" ")[1];
