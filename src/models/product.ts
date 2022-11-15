@@ -1,8 +1,8 @@
 import Model from "../inc/db/model";
 export type Product = {
-    id: number;
+    id?: number | string;
     name: string;
-    price: number;
+    price: number | string;
     category?: string;
 };
 class ProductModel extends Model {

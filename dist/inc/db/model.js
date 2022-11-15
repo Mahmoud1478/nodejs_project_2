@@ -54,19 +54,20 @@ var Model = /** @class */ (function () {
         this.query = sql_1.default.select(this.table, colums.toString());
         return this;
     };
-    Model.prototype.update = function (columns) {
+    Model.prototype.update = function (Entity) {
         return __awaiter(this, void 0, void 0, function () {
-            var modColums, valuesLen, column, conn, result;
+            var modColums, valuesLen, conn, result;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         modColums = [];
                         valuesLen = this.values.length + 1;
-                        for (column in columns) {
-                            modColums.push("".concat(column, " = ($").concat(valuesLen, ")"));
-                            this.values.push(columns[column]);
+                        Object.entries(Entity).map(function (entry) {
+                            modColums.push("".concat(entry[0], " = ($").concat(valuesLen, ")"));
+                            _this.values.push(entry[1]);
                             valuesLen++;
-                        }
+                        });
                         this.query = sql_1.default.update(this.table, modColums.toString());
                         this.build();
                         return [4 /*yield*/, (0, database_1.default)()];
@@ -76,7 +77,7 @@ var Model = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        return [2 /*return*/, result.rows[0]];
+                        return [2 /*return*/, result.rows];
                 }
             });
         });
@@ -101,20 +102,20 @@ var Model = /** @class */ (function () {
             });
         });
     };
-    Model.prototype.create = function (columns) {
+    Model.prototype.create = function (Entity) {
         return __awaiter(this, void 0, void 0, function () {
             var values, conn, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         values = [];
-                        Object.keys(columns).forEach(function (item, index) {
+                        Object.keys(Entity).forEach(function (item, index) {
                             values.push("$".concat(index + 1));
                         });
                         return [4 /*yield*/, (0, database_1.default)()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query(sql_1.default.insert(this.table, Object.keys(columns).toString(), values.toString()), Object.values(columns))];
+                        return [4 /*yield*/, conn.query(sql_1.default.insert(this.table, Object.keys(Entity).toString(), values.toString()), Object.values(Entity))];
                     case 2:
                         result = _a.sent();
                         conn.release();

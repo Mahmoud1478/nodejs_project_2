@@ -30,7 +30,7 @@ class Model {
         const conn = await connection();
         const result = await conn.query(this.query + " RETURNING *", this.values);
         conn.release();
-        return result.rows[0];
+        return result.rows;
     }
 
     public async delete<Type>(): Promise<Type[]> {

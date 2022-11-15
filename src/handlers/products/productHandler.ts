@@ -1,6 +1,6 @@
 import { Application } from "express";
 import Validation from "../../middlewares/validatorMw";
-import rules from "./schema/rules";
+import rules from "./rules/rules";
 import { byCategoty, destroy, index, show, store, update } from "./services";
 
 export default (App: Application) => {

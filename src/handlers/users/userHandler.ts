@@ -2,7 +2,7 @@ import { Application } from "express";
 import Validation from "../../middlewares/validatorMw";
 import rules from "./rules";
 import siginInRules from "./rules/sign_in";
-import { destroy, index, show, sign_in, sign_up, store, update } from "./servies";
+import { destroy, index, show, sign_in, sign_up, store, update } from "./services";
 
 export default (App: Application) => {
     App.get("/users", index);

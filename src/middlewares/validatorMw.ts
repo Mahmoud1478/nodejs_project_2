@@ -2,17 +2,20 @@ import { NextFunction, Response, Request } from "express";
 import Validator from "validatorjs";
 
 const Validation =
-    (rules: (req: Request) => { [x: string]: string }, vales = "body") =>
+    (rules: (req: Request) => Record<string, string>, values = "body") =>
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const rulesObjet = rules(req);
-        const validation = new Validator(req[vales], rulesObjet);
+        const validation = new Validator(req[values], rulesObjet);
         return validation.checkAsync(
             () => {
-                const data: { [x: string]: string } = {};
+                const data = {} as Record<string, string>;
                 Object.keys(rulesObjet).map((key) => {
-                    data[key] = (req[vales] as { [x: string]: string })[key];
-                    req.validated = data;
+                    const value = (req[values] as { [x: string]: string })[key];
+                    if (value) {
+                        data[key] = (req[values] as Record<string, string>)[key];
+                    }
                 });
+                req.validated = data;
                 next();
             },
             () => res.status(422).json(validation.errors.errors)

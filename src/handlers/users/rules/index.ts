@@ -1,7 +1,7 @@
 import { Request } from "express";
 
 const rules = (req: Request) => {
-    const schema: { [x: string]: string } = {
+    const schema: Record<string, string> = {
         lastname: "required",
     };
     switch (req.method) {

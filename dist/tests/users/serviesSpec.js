@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,9 +47,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var services_1 = require("../../handlers/users/servies/services");
+var services_1 = require("../../handlers/users/services/services");
 describe("users serives", function () {
-    var id;
     var user;
     it("create user", function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -50,8 +60,7 @@ describe("users serives", function () {
                     })];
                 case 1:
                     user = _a.sent();
-                    id = user.id;
-                    expect(user).toBeTruthy();
+                    expect(user.id).toBeTruthy();
                     return [2 /*return*/];
             }
         });
@@ -64,7 +73,7 @@ describe("users serives", function () {
                     _a = expect;
                     return [4 /*yield*/, (0, services_1.all)()];
                 case 1:
-                    _a.apply(void 0, [_b.sent()]).toBeTruthy();
+                    _a.apply(void 0, [(_b.sent()).length]).toBeGreaterThan(0);
                     return [2 /*return*/];
             }
         });
@@ -75,7 +84,7 @@ describe("users serives", function () {
             switch (_b.label) {
                 case 0:
                     _a = expect;
-                    return [4 /*yield*/, (0, services_1.one)(id)];
+                    return [4 /*yield*/, (0, services_1.one)(user.id)];
                 case 1:
                     _a.apply(void 0, [_b.sent()]).toBeTruthy();
                     return [2 /*return*/];
@@ -88,7 +97,7 @@ describe("users serives", function () {
             switch (_b.label) {
                 case 0:
                     _a = expect;
-                    return [4 /*yield*/, (0, services_1.find)("id", id)];
+                    return [4 /*yield*/, (0, services_1.find)("id", user.id)];
                 case 1:
                     _a.apply(void 0, [_b.sent()]).toBeTruthy();
                     return [2 /*return*/];
@@ -101,9 +110,9 @@ describe("users serives", function () {
             switch (_b.label) {
                 case 0:
                     _a = expect;
-                    return [4 /*yield*/, (0, services_1.edit)(id, user)];
+                    return [4 /*yield*/, (0, services_1.edit)(user.id, __assign(__assign({}, user), { lastname: "test2" }))];
                 case 1:
-                    _a.apply(void 0, [_b.sent()]).toBeTruthy();
+                    _a.apply(void 0, [(_b.sent())[0]]).toEqual(__assign(__assign({}, user), { lastname: "test2" }));
                     return [2 /*return*/];
             }
         });
@@ -114,9 +123,9 @@ describe("users serives", function () {
             switch (_b.label) {
                 case 0:
                     _a = expect;
-                    return [4 /*yield*/, (0, services_1.remove)(id)];
+                    return [4 /*yield*/, (0, services_1.remove)(user.id)];
                 case 1:
-                    _a.apply(void 0, [(_b.sent()).length]).toBeGreaterThan(0);
+                    _a.apply(void 0, [(_b.sent())[0]]).toEqual(__assign(__assign({}, user), { lastname: "test2" }));
                     return [2 /*return*/];
             }
         });

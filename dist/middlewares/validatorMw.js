@@ -40,19 +40,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var validatorjs_1 = __importDefault(require("validatorjs"));
-var Validation = function (rules, vales) {
-    if (vales === void 0) { vales = "body"; }
+var Validation = function (rules, values) {
+    if (values === void 0) { values = "body"; }
     return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var rulesObjet, validation;
         return __generator(this, function (_a) {
             rulesObjet = rules(req);
-            validation = new validatorjs_1.default(req[vales], rulesObjet);
+            validation = new validatorjs_1.default(req[values], rulesObjet);
             return [2 /*return*/, validation.checkAsync(function () {
                     var data = {};
                     Object.keys(rulesObjet).map(function (key) {
-                        data[key] = req[vales][key];
-                        req.validated = data;
+                        var value = req[values][key];
+                        if (value) {
+                            data[key] = req[values][key];
+                        }
                     });
+                    req.validated = data;
                     next();
                 }, function () { return res.status(422).json(validation.errors.errors); })];
         });

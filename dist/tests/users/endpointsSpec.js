@@ -50,6 +50,63 @@ describe("users endpoint", function () {
         lastname: "user",
         password: "123",
     };
+    it("should't sign up if not provided any data", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({})];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("sign up firstname is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        lastname: "user",
+                        password: "123",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("sign up lastname is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        firstname: "user",
+                        password: "123",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("sign up password is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        firstname: "user",
+                        lastname: "user",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("user can sign up", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, id;
         return __generator(this, function (_a) {
@@ -60,6 +117,18 @@ describe("users endpoint", function () {
                     id = jsonwebtoken_1.default.verify(response.body.token, (0, dontenv_1.env)("TOKEN_SECRET")).id;
                     user.id = id;
                     expect(response.body.token).toBeTruthy();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("sign up firstname is unique", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send(user)];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
                     return [2 /*return*/];
             }
         });
@@ -76,6 +145,49 @@ describe("users endpoint", function () {
             }
         });
     }); });
+    it("sign in name is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-in").send({
+                        password: "123",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("sign in password is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-in").send({
+                        firstname: "mahmoud",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("unable to sign in if firstname or password is wrong", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-in").send({
+                        firstname: "mahmoud",
+                        password: "worng",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it("list all users", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
@@ -84,6 +196,75 @@ describe("users endpoint", function () {
                 case 1:
                     response = _a.sent();
                     expect(response.body.length).toBeGreaterThan(0);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("create user firstname is unique ", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users").send(user)];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("should't create user if not provided any data", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({})];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("create user firstname is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        lastname: "user",
+                        password: "123",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("create user lastname is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        firstname: "user",
+                        password: "123",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it("create user password is required", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        firstname: "user",
+                        lastname: "user",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(422);
                     return [2 /*return*/];
             }
         });
@@ -111,7 +292,7 @@ describe("users endpoint", function () {
                 case 0: return [4 /*yield*/, HttpRequest.put("/users/" + user.id).send(user)];
                 case 1:
                     response = _a.sent();
-                    expect(response.body.id).toEqual(user.id);
+                    expect(response.body[0].id).toEqual(user.id);
                     return [2 /*return*/];
             }
         });
@@ -123,7 +304,7 @@ describe("users endpoint", function () {
                 case 0: return [4 /*yield*/, HttpRequest.delete("/users/" + user.id)];
                 case 1:
                     response = _a.sent();
-                    expect(response.body.length).toBeGreaterThan(0);
+                    expect(response.body[0].id).toEqual(user.id);
                     return [2 /*return*/];
             }
         });

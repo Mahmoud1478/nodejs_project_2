@@ -1,8 +1,7 @@
-import { all, edit, find, one, remove, save } from "../../handlers/users/servies/services";
+import { all, edit, find, one, remove, save } from "../../handlers/users/services/services";
 import { User } from "../../models/user";
 
 describe("users serives", (): void => {
-    let id: number | undefined | string;
     let user: User;
     it("create user", async () => {
         user = await save({
@@ -10,27 +9,39 @@ describe("users serives", (): void => {
             lastname: "test",
             password: "test",
         });
-        id = user.id;
-        expect(user).toBeTruthy();
+        expect(user.id).toBeTruthy();
     });
 
     it("list all users", async () => {
-        expect(await all()).toBeTruthy();
+        expect((await all()).length).toBeGreaterThan(0);
     });
 
     it("get one user", async () => {
-        expect(await one(id as unknown as string)).toBeTruthy();
+        expect(await one(user.id as string)).toBeTruthy();
     });
 
     it("find user by colmun", async () => {
-        expect(await find("id", id as unknown as string)).toBeTruthy();
+        expect(await find("id", user.id as string)).toBeTruthy();
     });
 
     it("update user", async () => {
-        expect(await edit(id as unknown as string, user as { [x: string]: string })).toBeTruthy();
+        expect(
+            (
+                await edit(user.id as string, {
+                    ...user,
+                    lastname: "test2",
+                })
+            )[0]
+        ).toEqual({
+            ...user,
+            lastname: "test2",
+        });
     });
 
     it("delete users", async () => {
-        expect((await remove(id as unknown as string)).length).toBeGreaterThan(0);
+        expect((await remove(user.id as string))[0]).toEqual({
+            ...user,
+            lastname: "test2",
+        });
     });
 });

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var validatorMw_1 = __importDefault(require("../../middlewares/validatorMw"));
-var rules_1 = __importDefault(require("./schema/rules"));
+var rules_1 = __importDefault(require("./rules/rules"));
 var services_1 = require("./services");
 exports.default = (function (App) {
     App.get("/products", services_1.index);
