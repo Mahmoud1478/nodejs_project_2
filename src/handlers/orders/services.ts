@@ -68,7 +68,7 @@ export const sign_up = async (request: Request, response: Response): Promise<Res
 export const sign_in = async (request: Request, response: Response): Promise<Response> => {
     const data = request.validated as { [x: string]: string };
     const user = await new UserModel().find<User>("firstname", data.firstname);
-    if (!user || !compareSync(data.password + env("bcypt_password"), user.password)) {
+    if (!user || !compareSync(data.password + env("bcypt_password"), user.password as string)) {
         return response.json({ errors: "user credential is worng" }).status(422);
     }
     return response.json({

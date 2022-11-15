@@ -1,9 +1,8 @@
 import { Application } from "express";
 import Validation from "../../middlewares/validatorMw";
-import rules from "./schema/rules";
-import siginInRules from "./schema/sign_in";
-import siginUpRules from "./schema/sign_up";
-import { destroy, index, show, sign_in, sign_up, store, update } from "./services";
+import rules from "./rules";
+import siginInRules from "./rules/sign_in";
+import { destroy, index, show, sign_in, sign_up, store, update } from "./servies";
 
 export default (App: Application) => {
     App.get("/users", index);
@@ -11,6 +10,6 @@ export default (App: Application) => {
     App.put("/users/:id", [Validation(rules)], update);
     App.get("/users/:id", show);
     App.delete("/users/:id", destroy);
-    App.post("/sign-in", [Validation(siginInRules)], sign_in);
-    App.post("/sign-up", [Validation(siginUpRules)], sign_up);
+    App.post("/users/sign-in", [Validation(siginInRules)], sign_in);
+    App.post("/users/sign-up", [Validation(rules)], sign_up);
 };

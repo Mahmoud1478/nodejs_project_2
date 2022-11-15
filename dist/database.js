@@ -42,9 +42,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var pg_1 = require("pg");
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-var _a = process.env, host = _a.host, user = _a.user, password = _a.password, database = _a.database;
-var port = process.env.port;
-var dbProcessor = new pg_1.Pool({ host: host, user: user, password: password, database: database, port: port });
+var prefix = "";
+if (process.env.ENV === "test") {
+    prefix = "TEST_";
+}
+var dbProcessor = new pg_1.Pool({
+    host: process.env["".concat(prefix, "DATABASE_HOST")],
+    user: process.env["".concat(prefix, "DATABASE_USER")],
+    password: process.env["".concat(prefix, "DATABASE_PASSWORD")],
+    database: process.env["".concat(prefix, "DATABASE_NAME")],
+    port: parseInt(process.env["".concat(prefix, "DATABASE_PORT")]),
+});
 exports.default = (function () { return __awaiter(void 0, void 0, void 0, function () {
     var err_1;
     return __generator(this, function (_a) {

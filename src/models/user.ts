@@ -1,10 +1,10 @@
 import Model from "../inc/db/model";
 
 export type User = {
-    id: number;
+    id?: number | string;
     firstname: string;
     lastname: string;
-    password: string;
+    password?: string;
 };
 
 class UserModel extends Model {

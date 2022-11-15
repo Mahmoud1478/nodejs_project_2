@@ -39,35 +39,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var dontenv_1 = require("../helps/dontenv");
-var user_1 = __importDefault(require("../models/user"));
-var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, payload, user, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                token = req.headers.authorization.split(" ")[1];
-                payload = jsonwebtoken_1.default.verify(token, (0, dontenv_1.env)("TOKEN_SECRET"));
-                return [4 /*yield*/, new user_1.default().find("id", payload.id)];
-            case 1:
-                user = _a.sent();
-                if (!user) {
-                    res.status(401).json({ error: "Unauthenticated" });
-                }
-                req.auth = user;
-                next();
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                if (error_1.message === "jwt must be provided") {
-                    res.status(401).json({ error: "Unauthenticated" });
+var supertest_1 = __importDefault(require("supertest"));
+var server_1 = __importDefault(require("../../server"));
+describe("users endpoint", function () {
+    var HttpRequest = (0, supertest_1.default)(server_1.default);
+    it("user can sign up", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, HttpRequest.post("/users/sign-up").send({
+                        firstname: "user",
+                        lastname: "user",
+                        password: 123,
+                    })];
+                case 1:
+                    response = _a.sent();
+                    console.log(response);
+                    expect(1).toBe(1);
                     return [2 /*return*/];
-                }
-                throw error_1;
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.default = auth;
+            }
+        });
+    }); });
+});

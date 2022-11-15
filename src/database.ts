@@ -1,14 +1,21 @@
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const { host, user, password, database } = process.env;
-const port = process.env.port as unknown as number;
+let prefix = "";
+if (process.env.ENV === "test") {
+    prefix = "TEST_";
+}
+const dbProcessor = new Pool({
+    host: process.env[`${prefix}DATABASE_HOST`],
+    user: process.env[`${prefix}DATABASE_USER`],
+    password: process.env[`${prefix}DATABASE_PASSWORD`],
+    database: process.env[`${prefix}DATABASE_NAME`],
+    port: parseInt(process.env[`${prefix}DATABASE_PORT`] as string) as number,
+});
 
-const dbProcessor = new Pool({ host, user, password, database, port });
-
-export default async () => {
+export default async (): Promise<PoolClient> => {
     try {
         return await dbProcessor.connect();
     } catch (err) {

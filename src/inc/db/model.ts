@@ -17,14 +17,14 @@ class Model {
         return this;
     }
 
-    public async update<Type>(columns: { [x: string]: string | number }): Promise<Type[]> {
+    public async update<Type>(Entity: Type): Promise<Type[]> {
         const modColums: string[] = [];
         let valuesLen: number = this.values.length + 1;
-        for (const column in columns) {
-            modColums.push(`${column} = ($${valuesLen})`);
-            this.values.push(columns[column]);
+        Object.entries(Entity as Record<string, unknown>).map((entry: [string, unknown]) => {
+            modColums.push(`${entry[0]} = ($${valuesLen})`);
+            this.values.push(entry[1] as string | number);
             valuesLen++;
-        }
+        });
         this.query = sql.update(this.table, modColums.toString());
         this.build();
         const conn = await connection();
@@ -41,15 +41,19 @@ class Model {
         conn.release();
         return result.rows;
     }
-    public async create<Type>(columns: { [x: string]: string | number }): Promise<Type> {
+    public async create<Type>(Entity: Type): Promise<Type> {
         const values: string[] = [];
-        Object.keys(columns).forEach((item: string, index: number) => {
+        Object.keys(Entity as Record<string, unknown>).forEach((item: string, index: number) => {
             values.push(`$${index + 1}`);
         });
         const conn = await connection();
         const result = await conn.query(
-            sql.insert(this.table, Object.keys(columns).toString(), values.toString()),
-            Object.values(columns)
+            sql.insert(
+                this.table,
+                Object.keys(Entity as Record<string, unknown>).toString(),
+                values.toString()
+            ),
+            Object.values(Entity as Record<string, unknown>)
         );
         conn.release();
         return result.rows[0];
