@@ -2,7 +2,7 @@ import supertest from "supertest";
 import App from "../../server";
 import { Product } from "../../models/product";
 
-xdescribe("products endpoint", (): void => {
+describe("products endpoint", (): void => {
     const HttpRequest = supertest(App);
     let product: Product = {
         name: "product endpoint",

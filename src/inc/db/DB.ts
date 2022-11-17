@@ -7,6 +7,8 @@ class DB {
     private joins: string[] = [];
     private table;
     private query: string;
+    private order_By = "";
+    private _limit = "";
     private values: (string | number)[] = [];
     private static db: Pool = connection;
     private static connection: PoolClient | undefined;
@@ -46,7 +48,19 @@ class DB {
             this.reset();
         }
     }
-
+    /**
+     * orderBy
+     */
+    public orderBy(column: string, type: "ASC") {
+        this.order_By = ` ORDER BY ${column} ${type}`;
+        return this;
+    }
+    /**
+     * limit
+     */
+    public limit(value: number) {
+        this._limit = ` LIMIT ${value}`;
+    }
     public join(table: string, localKey: string, foreignKey: string) {
         this.joins.push(sql.join(table, localKey, foreignKey));
         return this;
@@ -182,7 +196,7 @@ class DB {
     public static async selectRaw<Type>(
         query: string,
         values?: (string | number)[]
-    ): Promise<Type[]> {
+    ): Promise<Type[] | Type> {
         try {
             if (!DB.connection) {
                 DB.connection = await DB.db.connect();
@@ -228,7 +242,9 @@ class DB {
     //     });
     // }
 
-    public static async transcaction<Type>(callback: () => Promise<Type | Type[] | null>) {
+    public static async transcaction<Type>(
+        callback: CallableFunction
+    ): Promise<[unknown, null | Error]> {
         try {
             DB.group_mode = true;
             DB.connection = await DB.db.connect();
@@ -238,7 +254,7 @@ class DB {
             return [result, null];
         } catch (err) {
             await DB.connection?.query("ROLLBACK");
-            return [null, err];
+            return [null, err as Error];
         } finally {
             DB.connection?.release();
             DB.connection = undefined;
@@ -256,9 +272,9 @@ class DB {
                 }
                 return "";
             },
-            joins: (): string => {
-                return this.joins.join(" ");
-            },
+            joins: (): string => this.joins.join(" "),
+            limit: () => this._limit,
+            order_by: () => this.order_By,
         };
         return map[statement]();
     }

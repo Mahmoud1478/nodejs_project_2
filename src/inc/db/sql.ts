@@ -1,5 +1,5 @@
 export default {
-    arrangement: ["joins", "wheres"],
+    arrangement: ["joins", "wheres", "order_by", "limit"],
     select: (table: string, colums: string): string => `SELECT ${colums} FROM ${table}`,
     update: (table: string, colums: string): string => `UPDATE ${table} SET ${colums}`,
     delete: (table: string): string => `DELETE FROM ${table}`,

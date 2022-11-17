@@ -18,10 +18,10 @@ const query = `select orders.id , orders.status , (
 from orders where orders.status = ($2) and orders.user_id = ($1)`;
 
 export const all = async (user_id: string, status = "closed") =>
-    OrderModel.selectRaw(query, [user_id, status]);
+    OrderModel.selectRaw<OrderFull>(query, [user_id, status]);
 
-export const one = async (id: string, status: string): Promise<Order | Order[] | null> => {
-    return DB.selectRaw<Order>(query, [id, status]);
+export const one = async (id: string, status: string): Promise<OrderFull | OrderFull[]> => {
+    return DB.selectRaw<OrderFull>(query + " limit 1", [id, status]);
 };
 export const save = async (data: OrderCreation) => {
     return DB.transcaction<OrderFull>(async (): Promise<OrderFull> => {
@@ -30,6 +30,7 @@ export const save = async (data: OrderCreation) => {
             user_id,
             status,
         });
+
         const order_product = new DB("order_product");
         for (let i = 0; i < data.products.length; i++) {
             const item = data.products[i];
@@ -38,6 +39,7 @@ export const save = async (data: OrderCreation) => {
                 order_id: (order as unknown as Order).id,
             });
         }
+
         const order_product_map: Record<string | number, string | number> = {};
         data.products.forEach((item) => {
             order_product_map[item.product_id] = item.quantity;
@@ -59,8 +61,12 @@ export const save = async (data: OrderCreation) => {
 // export const remove = (id: string): Promise<Product[]> =>
 //     new ProductModel().where("id", id).delete<Product>();
 
-export const edit = async (id: string, user_id: string, data: OrderCreation) =>
-    DB.transcaction<OrderFull>(async (): Promise<OrderFull | null | OrderFull[]> => {
+export const edit = async (
+    id: string,
+    user_id: string,
+    data: OrderCreation
+): Promise<[OrderFull | unknown, null | Error]> =>
+    DB.transcaction<OrderFull>(async (): Promise<OrderFull> => {
         const orders = await new OrderModel().where("id", id).update<Order>({
             status: data.status,
         });
