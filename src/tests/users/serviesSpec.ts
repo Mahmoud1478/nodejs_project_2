@@ -3,7 +3,7 @@ import { User } from "../../models/user";
 
 describe("users serives", (): void => {
     let user: User;
-    it("create user", async () => {
+    it("create user", async (): Promise<void> => {
         user = await save({
             firstname: "test",
             lastname: "test",
@@ -12,19 +12,19 @@ describe("users serives", (): void => {
         expect(user.id).toBeTruthy();
     });
 
-    it("list all users", async () => {
+    it("list all users", async (): Promise<void> => {
         expect((await all()).length).toBeGreaterThan(0);
     });
 
-    it("get one user", async () => {
+    it("get one user", async (): Promise<void> => {
         expect(await one(user.id as string)).toBeTruthy();
     });
 
-    it("find user by colmun", async () => {
+    it("find user by colmun", async (): Promise<void> => {
         expect(await find("id", user.id as string)).toBeTruthy();
     });
 
-    it("update user", async () => {
+    it("update user", async (): Promise<void> => {
         expect(
             (
                 await edit(user.id as string, {
@@ -38,7 +38,7 @@ describe("users serives", (): void => {
         });
     });
 
-    it("delete users", async () => {
+    it("delete users", async (): Promise<void> => {
         expect((await remove(user.id as string))[0]).toEqual({
             ...user,
             lastname: "test2",

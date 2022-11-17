@@ -8,6 +8,7 @@ class DB {
     private table;
     private query: string;
     private order_By = "";
+    private group_by = "";
     private _limit = "";
     private values: (string | number)[] = [];
     private static db: Pool = connection;
@@ -51,8 +52,12 @@ class DB {
     /**
      * orderBy
      */
-    public orderBy(column: string, type: "ASC") {
+    public orderBy(column: string, type = "ASC") {
         this.order_By = ` ORDER BY ${column} ${type}`;
+        return this;
+    }
+    public groupBy(columns: string[]) {
+        this.group_by = ` GROUP BY ${columns.toString()}`;
         return this;
     }
     /**
@@ -60,6 +65,7 @@ class DB {
      */
     public limit(value: number) {
         this._limit = ` LIMIT ${value}`;
+        return this;
     }
     public join(table: string, localKey: string, foreignKey: string) {
         this.joins.push(sql.join(table, localKey, foreignKey));
@@ -242,9 +248,7 @@ class DB {
     //     });
     // }
 
-    public static async transcaction<Type>(
-        callback: CallableFunction
-    ): Promise<[unknown, null | Error]> {
+    public static async transcaction(callback: CallableFunction): Promise<[unknown, null | Error]> {
         try {
             DB.group_mode = true;
             DB.connection = await DB.db.connect();
@@ -275,6 +279,7 @@ class DB {
             joins: (): string => this.joins.join(" "),
             limit: () => this._limit,
             order_by: () => this.order_By,
+            group_by: () => this.group_by,
         };
         return map[statement]();
     }

@@ -1,8 +1,5 @@
 import { save, edit, all, one } from "../../handlers/orders/services/services";
-import DB from "../../inc/db/DB";
 import { OrderFull } from "../../models/order";
-import ProductModel, { Product } from "../../models/product";
-import UserModel, { User } from "../../models/user";
 
 describe("orders services", (): void => {
     it("save order with products and status current", async (): Promise<void> => {

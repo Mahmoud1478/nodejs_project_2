@@ -1,6 +1,5 @@
 import DB from "../inc/db/DB";
 import { Product } from "./product";
-import { User } from "./user";
 export type Order = {
     id?: number | string;
     user_id?: number | string;

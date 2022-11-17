@@ -1,3 +1,4 @@
+import DB from "../../../inc/db/DB";
 import ProductModel, { Product } from "../../../models/product";
 
 export const all = (): Promise<Product[]> => new ProductModel().get<Product>();
@@ -18,3 +19,12 @@ export const findBy = (column: string, value: string): Promise<Product | null> =
 
 export const findByCategory = (category: string): Promise<Product[]> =>
     new ProductModel().where("category", category).get<Product>();
+
+export const status = (limit: string): Promise<{ quantity: number; name: string }[]> =>
+    new DB("order_product")
+        .select(["products.name", "sum(quantity) as quantity"])
+        .join("products", "products.id", "order_product.product_id")
+        .groupBy(["product_id ", "products.name"])
+        .orderBy("quantity", "DESC")
+        .limit(limit as unknown as number)
+        .get<{ quantity: number; name: string }>();

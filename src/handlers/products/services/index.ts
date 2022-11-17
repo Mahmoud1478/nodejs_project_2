@@ -1,6 +1,6 @@
 import { Product } from "../../../models/product";
 import { Request, Response } from "express";
-import { all, edit, findByCategory, one, remove, save } from "./services";
+import { all, edit, findByCategory, one, remove, save, status } from "./services";
 
 export const index = async (request: Request, response: Response): Promise<Response> =>
     response.json(await all());
@@ -23,3 +23,7 @@ export const destroy = async (request: Request, response: Response): Promise<Res
 
 export const byCategoty = async (request: Request, response: Response): Promise<Response> =>
     response.json(await findByCategory(request.params.category));
+
+export const top = async (request: Request, response: Response): Promise<Response> => {
+    return response.json(await status((request.query.limit ?? 5) as string));
+};
