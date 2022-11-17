@@ -57,7 +57,12 @@ const container: Rule[] = [
         type: "async",
         name: "exists",
         errorMessage: "",
-        callback: async (value, attribute, feild, passes) => {
+        callback: async (
+            value: string | number | boolean,
+            attribute: string,
+            feild: string,
+            passes
+        ): Promise<void> => {
             const [table, column, type] = attribute.split(","),
                 conn = await connection.connect(),
                 values = [value],

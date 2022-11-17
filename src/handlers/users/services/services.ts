@@ -10,6 +10,7 @@ export const save = (data: User): Promise<User> => new UserModel().create<User>(
 
 export const remove = (id: string): Promise<User[]> =>
     new UserModel().where("id", id).delete<User>();
+
 export const edit = (id: string, data: User): Promise<User[]> =>
     new UserModel().where("id", id).update<User>(data);
 

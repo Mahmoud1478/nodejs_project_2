@@ -17,12 +17,6 @@ export const store = async (request: Request, response: Response): Promise<Respo
 export const current = async (request: Request, response: Response): Promise<Response> => {
     return response.json(await one(request.auth?.id as string, "current"));
 };
-export const closed = async (request: Request, response: Response): Promise<Response> => {
-    return response.json(await one(request.auth?.id as string, "closed"));
-};
-// export const show = async (request: Request, response: Response): Promise<Response> =>
-//     response.json(await one(request.params.id));
-
 export const update = async (request: Request, response: Response): Promise<Response> => {
     const data = request.validated as OrderCreation,
         order = await new OrderModel()

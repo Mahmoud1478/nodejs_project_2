@@ -17,14 +17,14 @@ const query = `select orders.id , orders.status , (
 )as products 
 from orders where orders.status = ($2) and orders.user_id = ($1)`;
 
-export const all = async (user_id: string, status = "closed") =>
+export const all = async (user_id: string, status = "closed"): Promise<OrderFull[]> =>
     OrderModel.selectRaw<OrderFull>(query, [user_id, status]);
 
-export const one = async (id: string, status: string): Promise<OrderFull | OrderFull[]> => {
+export const one = async (id: string, status: string): Promise<OrderFull[]> => {
     return DB.selectRaw<OrderFull>(query + " limit 1", [id, status]);
 };
-export const save = async (data: OrderCreation) => {
-    return DB.transcaction<OrderFull>(async (): Promise<OrderFull> => {
+export const save = async (data: OrderCreation): Promise<[OrderFull | unknown, null | Error]> =>
+    DB.transcaction(async (): Promise<OrderFull> => {
         const { user_id, status } = data;
         const order = await new OrderModel().create<Order>({
             user_id,
@@ -56,17 +56,13 @@ export const save = async (data: OrderCreation) => {
             }),
         };
     });
-};
-
-// export const remove = (id: string): Promise<Product[]> =>
-//     new ProductModel().where("id", id).delete<Product>();
 
 export const edit = async (
     id: string,
     user_id: string,
     data: OrderCreation
 ): Promise<[OrderFull | unknown, null | Error]> =>
-    DB.transcaction<OrderFull>(async (): Promise<OrderFull> => {
+    DB.transcaction(async (): Promise<OrderFull> => {
         const orders = await new OrderModel().where("id", id).update<Order>({
             status: data.status,
         });
@@ -112,9 +108,3 @@ export const edit = async (
                 .get<OrderProduct>(),
         };
     });
-
-// export const findBy = (column: string, value: string): Promise<Product | null> =>
-//     new ProductModel().find<Product>(column, value);
-
-// export const findByCategory = (category: string): Promise<Product[]> =>
-//     new ProductModel().where("category", category).get<Product>();

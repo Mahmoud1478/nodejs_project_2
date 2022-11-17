@@ -4,7 +4,7 @@ import Validation from "../../middlewares/validatorMw";
 import rules from "./rules/rules";
 import { byCategoty, destroy, index, show, store, top, update } from "./services";
 
-export default (App: Application) => {
+export default (App: Application): void => {
     App.get("/products", index);
     App.get("/products/top", top);
     App.post("/products", [auth, Validation(rules)], store);

@@ -52,22 +52,22 @@ class DB {
     /**
      * orderBy
      */
-    public orderBy(column: string, type = "ASC") {
+    public orderBy(column: string, type = "ASC"): DB {
         this.order_By = ` ORDER BY ${column} ${type}`;
         return this;
     }
-    public groupBy(columns: string[]) {
+    public groupBy(columns: string[]): DB {
         this.group_by = ` GROUP BY ${columns.toString()}`;
         return this;
     }
     /**
      * limit
      */
-    public limit(value: number) {
+    public limit(value: number): DB {
         this._limit = ` LIMIT ${value}`;
         return this;
     }
-    public join(table: string, localKey: string, foreignKey: string) {
+    public join(table: string, localKey: string, foreignKey: string): DB {
         this.joins.push(sql.join(table, localKey, foreignKey));
         return this;
     }
@@ -178,7 +178,7 @@ class DB {
      * getQuery
      * @return string
      */
-    public getQuery() {
+    public getQuery(): string {
         this.build();
         return this.query;
     }
@@ -202,7 +202,7 @@ class DB {
     public static async selectRaw<Type>(
         query: string,
         values?: (string | number)[]
-    ): Promise<Type[] | Type> {
+    ): Promise<Type[]> {
         try {
             if (!DB.connection) {
                 DB.connection = await DB.db.connect();
@@ -216,7 +216,7 @@ class DB {
             }
         }
     }
-    private reset() {
+    private reset(): DB {
         this.query = sql.select(this.table, "*");
         this.values = [];
         this.wheres = [];
