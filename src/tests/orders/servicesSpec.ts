@@ -5,23 +5,6 @@ import ProductModel, { Product } from "../../models/product";
 import UserModel, { User } from "../../models/user";
 
 describe("orders services", (): void => {
-    beforeAll(async () => {
-        await DB.group(async (): Promise<void> => {
-            await new ProductModel().create<Product>({
-                name: "test",
-                price: "123",
-            });
-            await new ProductModel().create<Product>({
-                name: "test1",
-                price: "123",
-            });
-            await new UserModel().create<User>({
-                firstname: "order-test",
-                lastname: "tets",
-                password: "123",
-            });
-        });
-    });
     it("save order with products and status current", async (): Promise<void> => {
         const [value] = await save({
             user_id: "1",
@@ -63,7 +46,7 @@ describe("orders services", (): void => {
     });
 
     it("update order with products", async (): Promise<void> => {
-        const [value] = await edit("2", "1", {
+        const [value] = await edit("3", "1", {
             user_id: "1",
             status: "closed",
             products: [

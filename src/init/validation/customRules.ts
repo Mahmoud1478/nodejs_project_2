@@ -58,17 +58,22 @@ const container: Rule[] = [
         name: "exists",
         errorMessage: "",
         callback: async (value, attribute, feild, passes) => {
-            const [table, column] = attribute.split(","),
+            const [table, column, type] = attribute.split(","),
                 conn = await connection.connect(),
                 values = [value],
                 query = `SELECT COUNT(*) FROM ${table} WHERE ${column} = ($1)`;
-            let _passes = true;
-            const { rows } = await conn.query(query, values);
-            conn.release();
-            if (!parseInt(rows[0].count)) {
-                _passes = false;
+
+            if (typeof value == type) {
+                let _passes = true;
+                const { rows } = await conn.query(query, values);
+                conn.release();
+                if (!parseInt(rows[0].count)) {
+                    _passes = false;
+                }
+                passes(_passes, `${value} dosen't exist`);
+            } else {
+                passes(false, `${feild} invaild data type `);
             }
-            passes(_passes, `${value} dosen't exist`);
         },
     },
 ];
