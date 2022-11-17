@@ -68,7 +68,6 @@
 
 -   all point when data is invalid will return errors with status 422
 
-
 ![422](./docs/img/422.png)
 
 ---
@@ -81,9 +80,13 @@ by
     ```shell
       npm install && npm run start
     ```
+-   copy .env.exampel to .env and configure it
+
+    ![.env](./docs/img/404.png)
+
 -   visiting available endpoints and providing valid data
 
-   # Example
+# Example
 
     `http://localhost:3000/orders`
 
