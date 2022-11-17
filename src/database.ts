@@ -15,10 +15,4 @@ const dbProcessor = new Pool({
     port: parseInt(process.env[`${prefix}DATABASE_PORT`] as string) as number,
 });
 
-export default async (): Promise<PoolClient> => {
-    try {
-        return await dbProcessor.connect();
-    } catch (err) {
-        throw err;
-    }
-};
+export default dbProcessor;

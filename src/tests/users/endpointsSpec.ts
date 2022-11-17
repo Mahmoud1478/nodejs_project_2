@@ -4,7 +4,7 @@ import Jwt, { JwtPayload } from "jsonwebtoken";
 import { env } from "../../helps/dontenv";
 import { User } from "../../models/user";
 
-describe("users endpoint", (): void => {
+xdescribe("users endpoint", (): void => {
     const HttpRequest = supertest(App);
     let token: string;
     const user: User = {

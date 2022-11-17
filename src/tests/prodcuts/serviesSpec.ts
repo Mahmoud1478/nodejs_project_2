@@ -1,7 +1,7 @@
 import { all, edit, findBy, one, remove, save } from "../../handlers/products/services/services";
 import { Product } from "../../models/product";
 
-describe("products serives", (): void => {
+xdescribe("products serives", (): void => {
     let product: Product;
     it("create product", async () => {
         product = await save({

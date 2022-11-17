@@ -1,5 +1,3 @@
-// export const SELECT_STATEMENT = (colums:string , table:string):string => `select ${colums} from ${table}`;
-
 export default {
     arrangement: ["joins", "wheres"],
     select: (table: string, colums: string): string => `SELECT ${colums} FROM ${table}`,
@@ -8,4 +6,7 @@ export default {
     where: (conditions: string): string => ` WHERE ${conditions}`,
     insert: (table: string, colums: string, values: string): string =>
         `INSERT INTO ${table} (${colums}) VALUES (${values}) RETURNING *`,
+    where_in: (column: string, values: string) => `${column} in (${values})`,
+    join: (table: string, localKey: string, foreignKey: string, type = "INNER") =>
+        ` ${type} JOIN ${table} ON ${localKey} = ${foreignKey}`,
 };

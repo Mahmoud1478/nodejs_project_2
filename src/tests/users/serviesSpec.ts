@@ -1,7 +1,7 @@
 import { all, edit, find, one, remove, save } from "../../handlers/users/services/services";
 import { User } from "../../models/user";
 
-describe("users serives", (): void => {
+xdescribe("users serives", (): void => {
     let user: User;
     it("create user", async () => {
         user = await save({

@@ -37,13 +37,12 @@ const container: Rule[] = [
                 query += ` AND id != ($2)`;
                 values.push(id);
             }
-            const conn = await connection();
+            const conn = await connection.connect();
             const result = await conn.query(query, values);
             conn.release();
             if (parseInt(result.rows[0].count)) {
                 _passes = false;
             }
-
             passes(_passes, `${value} aready taken`);
         },
         errorMessage: ``,
@@ -53,6 +52,24 @@ const container: Rule[] = [
         name: "nullable",
         errorMessage: "",
         callback: (): boolean => true,
+    },
+    {
+        type: "async",
+        name: "exists",
+        errorMessage: "",
+        callback: async (value, attribute, feild, passes) => {
+            const [table, column] = attribute.split(","),
+                conn = await connection.connect(),
+                values = [value],
+                query = `SELECT COUNT(*) FROM ${table} WHERE ${column} = ($1)`;
+            let _passes = true;
+            const { rows } = await conn.query(query, values);
+            conn.release();
+            if (!parseInt(rows[0].count)) {
+                _passes = false;
+            }
+            passes(_passes, `${value} dosen't exist`);
+        },
     },
 ];
 export default container;

@@ -1,4 +1,4 @@
-import Model from "../inc/db/model";
+import DB from "../inc/db/DB";
 
 export type User = {
     id?: number | string;
@@ -7,7 +7,7 @@ export type User = {
     password?: string;
 };
 
-class UserModel extends Model {
+class UserModel extends DB {
     public constructor() {
         super("users");
     }
