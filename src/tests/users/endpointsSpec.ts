@@ -44,6 +44,7 @@ describe("users endpoint", (): void => {
         const response = await HttpRequest.post("/users/sign-up").send(user);
         const { id } = Jwt.verify(response.body.token, env("TOKEN_SECRET") as string) as JwtPayload;
         user.id = id;
+
         expect(response.body.token).toBeTruthy();
     });
 
@@ -78,16 +79,21 @@ describe("users endpoint", (): void => {
         expect(response.status).toBe(422);
     });
     it("list all users", async (): Promise<void> => {
-        const response = await HttpRequest.get("/users");
+        const response = await HttpRequest.get("/users").set("Authorization", "bearer " + token);
+
         expect(response.body.length).toBeGreaterThan(0);
     });
 
     it("create user firstname is unique ", async (): Promise<void> => {
-        const response = await HttpRequest.post("/users").send(user);
+        const response = await HttpRequest.post("/users")
+            .send(user)
+            .set("Authorization", "bearer " + token);
         expect(response.status).toBe(422);
     });
     it("should't create user if not provided any data", async (): Promise<void> => {
-        const response = await HttpRequest.post("/users/sign-up").send({});
+        const response = await HttpRequest.post("/users/sign-up")
+            .set("Authorization", "bearer " + token)
+            .send({});
         expect(response.status).toBe(422);
     });
     it("create user firstname is required", async (): Promise<void> => {
@@ -115,7 +121,10 @@ describe("users endpoint", (): void => {
     });
 
     it("show user", async (): Promise<void> => {
-        const response = await HttpRequest.get("/users/" + user.id);
+        const response = await HttpRequest.get("/users/" + user.id).set(
+            "Authorization",
+            "bearer " + token
+        );
         expect(response.body).toEqual({
             firstname: "user",
             lastname: "user",
@@ -124,12 +133,17 @@ describe("users endpoint", (): void => {
     });
 
     it("update user", async (): Promise<void> => {
-        const response = await HttpRequest.put("/users/" + user.id).send(user);
+        const response = await HttpRequest.put("/users/" + user.id)
+            .set("Authorization", "bearer " + token)
+            .send(user);
         expect(response.body[0].id).toEqual(user.id);
     });
 
     it("delete user", async (): Promise<void> => {
-        const response = await HttpRequest.delete("/users/" + user.id);
+        const response = await HttpRequest.delete("/users/" + user.id).set(
+            "Authorization",
+            "bearer " + token
+        );
         expect(response.body[0].id).toEqual(user.id);
     });
 });
