@@ -2,7 +2,10 @@ import { NextFunction, Response, Request } from "express";
 import Validator from "validatorjs";
 
 const Validation =
-    (rules: (req: Request) => Record<string, string>, values = "body") =>
+    (
+        rules: (req: Request) => Record<string, string>,
+        values = "body"
+    ): ((req: Request, res: Response, next: NextFunction) => Promise<void>) =>
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         const rulesObjet = rules(req);
         const validation = new Validator(req[values], rulesObjet);

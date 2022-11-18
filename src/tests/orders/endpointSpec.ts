@@ -5,7 +5,7 @@ import App from "../../server";
 describe("orders endpoint", (): void => {
     const HttpRequest = supertest(App);
     let token: string;
-    beforeAll(async (): Promise<void> => {
+    beforeAll(async () => {
         await DB.group(async (): Promise<void> => {
             await new ProductModel().create<Product>({
                 name: "test",
@@ -24,22 +24,22 @@ describe("orders endpoint", (): void => {
         token = response.body.token;
     });
 
-    it("closed orders can't be access without token", async () => {
+    it("closed orders can't be access without token", async (): Promise<void> => {
         const response = await HttpRequest.get("/orders");
         expect(response.status).toBe(401);
     });
 
-    it("current order can't be access without token", async () => {
+    it("current order can't be access without token", async (): Promise<void> => {
         const response = await HttpRequest.get("/orders/current");
         expect(response.status).toBe(401);
     });
 
-    it("create orders can't be access without token", async () => {
+    it("create orders can't be access without token", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders");
         expect(response.status).toBe(401);
     });
 
-    it("update order can't be access without token", async () => {
+    it("update order can't be access without token", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1");
         expect(response.status).toBe(401);
     });
@@ -56,7 +56,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders status in (closed, current)", async () => {
+    it("create orders status in (closed, current)", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -70,7 +70,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders products required", async () => {
+    it("create orders products required", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -78,7 +78,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders product_id required", async () => {
+    it("create orders product_id required", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -91,7 +91,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders quantity required", async () => {
+    it("create orders quantity required", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -104,7 +104,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders product_id esists in product table", async () => {
+    it("create orders product_id esists in product table", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -118,7 +118,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders product_id is integer", async () => {
+    it("create orders product_id is integer", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -132,7 +132,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders quantity is integer", async () => {
+    it("create orders quantity is integer", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -146,7 +146,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("create orders", async () => {
+    it("create orders", async (): Promise<void> => {
         const response = await HttpRequest.post("/orders")
             .set("Authorization", "bearer " + token)
             .send({
@@ -161,7 +161,7 @@ describe("orders endpoint", (): void => {
         expect(response.status).toBe(200);
     });
 
-    it("get current order", async () => {
+    it("get current order", async (): Promise<void> => {
         const response = await HttpRequest.get("/orders/current").set(
             "Authorization",
             "bearer " + token
@@ -169,7 +169,7 @@ describe("orders endpoint", (): void => {
         expect(response.status).toBe(200);
     });
 
-    it("update orders", async () => {
+    it("update orders", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1")
             .set("Authorization", "bearer " + token)
             .send({
@@ -183,7 +183,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(200);
     });
-    it("update orders status is required", async () => {
+    it("update orders status is required", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1")
             .set("Authorization", "bearer " + token)
             .send({
@@ -196,7 +196,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("update orders status is in (closed,current)", async () => {
+    it("update orders status is in (closed,current)", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1")
             .set("Authorization", "bearer " + token)
             .send({
@@ -210,7 +210,7 @@ describe("orders endpoint", (): void => {
             });
         expect(response.status).toBe(422);
     });
-    it("update orders product_id is required", async () => {
+    it("update orders product_id is required", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1")
             .set("Authorization", "bearer " + token)
             .send({
@@ -224,7 +224,7 @@ describe("orders endpoint", (): void => {
         expect(response.status).toBe(422);
     });
 
-    it("update orders quantity is required", async () => {
+    it("update orders quantity is required", async (): Promise<void> => {
         const response = await HttpRequest.put("/orders/1")
             .set("Authorization", "bearer " + token)
             .send({

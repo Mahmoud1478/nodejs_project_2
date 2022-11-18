@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-const rules = (req: Request) => {
+const rules = (req: Request): Record<string, string> => {
     const schema: Record<string, string> = {
         category: "nullable",
         price: "required|numeric",

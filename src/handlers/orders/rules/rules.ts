@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-const rules = (request: Request) => {
+const rules = (request: Request): Record<string, string> => {
     const schema: Record<string, string> = {
         status: "required|in:current,closed",
         "products.*.product_id": "required|integer|exists:products,id,number",
