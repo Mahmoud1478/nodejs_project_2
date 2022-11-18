@@ -45,7 +45,7 @@
 #### Requirements
 
     - endpoint(create, update) require category(optional by default untitled) ,price ,name
-    - only endpoints (create, update) require jwt except sign up and sign in
+    - only endpoints (create, update) require jwt
 
 ---
 
@@ -76,13 +76,39 @@
 
 by
 
--   installing app's dependency and start dev server by using
+-   create username , password and database for testing and dev/production
+
+    -   first login in postgres with root user
+
     ```shell
-      npm install && npm run start
+      psql -U postgres -W
+      Password:
     ```
--   copy .env.exampel to .env and configure it
+
+    -   create new user and database
+
+    ```sql
+        CREATE USER {your_user_name} WITH PASSWORD '{your_password}';
+        CREATE DATABASE {your_database_name} WITH OWNER {your_user_name} ENCODING = 'utf8';
+    ```
+
+    -   same for testing user and db
+
+    ![createdb](./docs/img/create-db-ps.png)
+
+-   copy .env.example to .env
 
     ![.env](./docs/img/404.png)
+
+-   and configure it with new users and dbs
+
+    ![.env](./docs/img/env.png)
+
+-   run this command to initialize the app
+
+    ```shell
+      npm run init
+    ```
 
 -   visiting available endpoints and providing valid data
 
@@ -94,37 +120,49 @@ by
 
 ## Available Scripts
 
-1- to install app's dependency
+-   to initialize the app
 
 ```shell
-    npm install
+    npm init
 ```
 
-2- to build the app
+-   to build the app
 
 ```shell
     npm run build
 ```
 
-3- to start development server
+-   to start development server
 
 ```shell
     npm run start
 ```
 
-4- to test the app
+-   to test the app
 
 ```shell
     npm run test
 ```
 
-5- to format code (typescript)
+-   to fresh database
+
+```shell
+    npm run db:fresh
+```
+
+-   to migrate database
+
+```shell
+    npm run db:migrate
+```
+
+-   to format code (typescript)
 
 ```shell
     npm run format
 ```
 
-6- to check code (typescript) errors
+-   to check code (typescript) errors
 
 ```shell
     npm run lint
