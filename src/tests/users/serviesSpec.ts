@@ -1,7 +1,7 @@
 import { all, edit, find, one, remove, save } from "../../handlers/users/services/services";
 import { User } from "../../models/user";
 
-describe("users serives", (): void => {
+describe("users services", (): void => {
     let user: User;
     it("create user", async (): Promise<void> => {
         user = await save({
@@ -37,7 +37,6 @@ describe("users serives", (): void => {
             lastname: "test2",
         });
     });
-
     it("delete users", async (): Promise<void> => {
         expect((await remove(user.id as string))[0]).toEqual({
             ...user,

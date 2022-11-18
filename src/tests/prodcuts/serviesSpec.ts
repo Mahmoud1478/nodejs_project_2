@@ -9,7 +9,7 @@ import {
 } from "../../handlers/products/services/services";
 import { Product } from "../../models/product";
 
-describe("products serives", (): void => {
+describe("products services", (): void => {
     let product: Product;
     it("create product", async (): Promise<void> => {
         product = await save({
