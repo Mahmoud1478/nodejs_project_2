@@ -15,7 +15,8 @@
         "db:create": "db-migrate db:create",
         "db:drop": "db-migrate db:drop",
         "db:fresh": "db-migrate fresh",
-        "init": "npm install && npm run db:migrate &&npm run start"
+        "init": "npm install && npm run db:migrate &&npm run start",
+        "test-2": "npm run build && npm run jasmine"
     },
     "dependencies": {
         "bcrypt": "^5.1.0",
